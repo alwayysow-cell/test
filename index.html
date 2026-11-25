@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Алекс Морозов — Веб-разработчик</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #0a0a0f;
+    --bg-2: #12121a;
+    --card: #16161f;
+    --border: #252533;
+    --text: #e4e4e7;
+    --text-dim: #9ca3af;
+    --accent: #8b5cf6;
+    --accent-2: #6366f1;
+    --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+  }
+  
+  html { scroll-behavior: smooth; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  
+  /* Фоновые эффекты */
+  .bg-glow {
+    position: fixed;
+    top: -200px;
+    left: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    animation: float 20s ease-in-out infinite;
+  }
+  .bg-glow-2 {
+    position: fixed;
+    bottom: -200px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    animation: float 25s ease-in-out infinite reverse;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(100px, 100px); }
+  }
+  
+  /* Навигация */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    transition: all 0.3s;
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 1.3rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 35px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover::after { width: 100%; }
+  
+  .burger { display: none; cursor: pointer; font-size: 1.5rem; }
+  
+  /* Секции */
+  section {
+    padding: 120px 5%;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .container { max-width: 1200px; margin: 0 auto; }
+  
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+  }
+  .hero-content { max-width: 800px; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    color: #c4b5fd;
+    margin-bottom: 25px;
+  }
+  .pulse {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  }
+  
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 25px;
+    letter-spacing: -2px;
+  }
+  .gradient-text {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 1.2rem;
+    color: var(--text-dim);
+    margin-bottom: 40px;
+    max-width: 600px;
+  }
+  
+  .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--gradient);
+    color: white;
+    box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.5);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px -10px rgba(139, 92, 246, 0.7);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    background: var(--card);
+    border-color: var(--accent);
+  }
+  
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 30px;
+    margin-top: 80px;
+    padding-top: 50px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+  
+  /* Заголовки секций */
+  .section-header {
+    margin-bottom: 60px;
+    text-align: center;
+  }
+  .section-tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: #c4b5fd;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 15px;
+  }
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 15px;
+  }
+  .section-subtitle {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .about-text p {
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+  }
+  .about-text strong { color: var(--text); }
+  
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient);
+  }
+  .code-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+  .code-line { display: flex; }
+  .code-keyword { color: #c084fc; }
+  .code-string { color: #86efac; }
+  .code-prop { color: #60a5fa; }
+  .code-comment { color: #6b7280; font-style: italic; }
+  .code-number { color: #fbbf24; }
+  
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+  }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.05), transparent);
+    transition: left 0.6s;
+  }
+  .skill-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(139, 92, 246, 0.4);
+  }
+  .skill-card:hover::before { left: 100%; }
+  .skill-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  .skill-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  .skill-card p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-tag {
+    padding: 4px 10px;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: #c4b5fd;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+  }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s;
+    cursor: pointer;
+  }
+  .project-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 20px 40px -15px rgba(139, 92, 246, 0.3);
+  }
+  .project-image {
+    height: 200px;
+    background: var(--gradient);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+  }
+  .project-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.6) 100%);
+  }
+  .project-card:nth-child(2) .project-image {
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+  }
+  .project-card:nth-child(3) .project-image {
+    background: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%);
+  }
+  .project-card:nth-child(4) .project-image {
+    background: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
+  }
+  .project-info { padding: 25px; }
+  .project-category {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .project-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  .project-info p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .project-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: gap 0.3s;
+  }
+  .project-link:hover { gap: 10px; }
+  
+  /* CONTACT */
+  .contact-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+    animation: rotate 20s linear infinite;
+  }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .contact-wrapper > * { position: relative; z-index: 1; }
+  .contact-wrapper h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 15px;
+    font-weight: 800;
+  }
+  .contact-wrapper p {
+    color: var(--text-dim);
+    margin-bottom: 35px;
+    font-size: 1.1rem;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .contact-link {
+    padding: 12px 24px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .contact-link:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    background: rgba(139, 92, 246, 0.1);
+  }
+  
+  /* Footer */
+  footer {
+    padding: 40px 5%;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+  }
+  footer span {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+  
+  /* Анимации появления */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Адаптив */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .burger { display: block; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .contact-wrapper { padding: 40px 25px; }
+    section { padding: 80px 5%; }
+    .stats { margin-top: 50px; padding-top: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<nav>
+  <div class="logo">&lt;AM/&gt;</div>
+  <ul class="nav-links">
+    <li><a href="#home">Главная</a></li>
+    <li><a href="#about">Обо мне</a></li>
+    <li><a href="#skills">Навыки</a></li>
+    <li><a href="#projects">Проекты</a></li>
+    <li><a href="#contact">Контакты</a></li>
+  </ul>
+  <div class="burger">☰</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse"></span>
+        Открыт для новых проектов
+      </div>
+      <h1>
+        Привет, я Алекс —<br>
+        <span class="gradient-text">создаю сайты,</span><br>
+        которые работают
+      </h1>
+      <p>
+        Full-stack веб-разработчик с 5+ годами опыта. Превращаю идеи в быстрые, красивые и удобные цифровые продукты. От лендингов до сложных веб-приложений.
+      </p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary">
+          Смотреть работы →
+        </a>
+        <a href="#contact" class="btn btn-secondary">
+          Связаться со мной
+        </a>
+      </div>
+      
+      <div class="stats">
+        <div>
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Завершённых проектов</div>
+        </div>
+        <div>
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Лет опыта</div>
+        </div>
+        <div>
+          <div class="stat-number">30+</div>
+          <div class="stat-label">Довольных клиентов</div>
+        </div>
+        <div>
+          <div class="stat-number">99%</div>
+          <div class="stat-label">Положительных отзывов</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">// about</div>
+      <h2 class="section-title">Немного <span class="gradient-text">обо мне</span></h2>
+      <p class="section-subtitle">Разработчик, который любит чистый код и красивые интерфейсы</p>
+    </div>
+    
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p>
+          Меня зовут <strong>Алекс Морозов</strong>, я живу в Москве и занимаюсь веб-разработкой с 2020 года. За это время я прошёл путь от верстальщика до full-stack разработчика, работая с проектами разного масштаба — от небольших лендингов до крупных SaaS-платформ.
+        </p>
+        <p>
+          Моя сильная сторона — <strong>внимание к деталям</strong>. Я верю, что хороший сайт — это не только работающий код, но и продуманный UX, быстрая загрузка и безупречная адаптивность.
+        </p>
+        <p>
+          Когда не пишу код — катаюсь на велосипеде, читаю про дизайн-системы и пью слишком много кофе ☕
+        </p>
+      </div>
+      
+      <div class="about-card fade-in">
+        <div class="code-block">
+          <div class="code-line"><span class="code-keyword">const</span>&nbsp;<span class="code-prop">developer</span>&nbsp;= {</div>
+          <div class="code-line">&nbsp;&nbsp;<span class="code-prop">name</span>: <span class="code-string">'Алекс Морозов'</span>,</div>
+          <div class="code-line">&nbsp;&nbsp;<span class="code-prop">role</span>: <span class="code-string">'Full-stack Dev'</span>,</div>
+          <div class="code-line">&nbsp;&nbsp;<span class="code-prop">experience</span>: <span class="code-number">5</span>,</div>
+          <div class="code-line">&nbsp;&nbsp;<span class="code-prop">location</span>: <span class="code-string">'Москва, РФ'</span>,</div>
+          <div class="code-line">&nbsp;&nbsp;<span class="code-prop">stack</span>: [<span class="code-string">'React'</span>, <span class="code-string">'Node'</span>,</div>
+          <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">'TypeScript'</span>, <span class="code-string">'Python'</span>],</div>
+          <div class="code-line">&nbsp;&nbsp;<span class="code-prop">coffee</span>: <span class="code-keyword">Infinity</span>,</div>
+          <div class="code-line">&nbsp;&nbsp;<span class="code-comment">// Always learning 🚀</span></div>
+          <div class="code-line">};</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">// skills</div>
+      <h2 class="section-title">Мой <span class="gradient-text">стек технологий</span></h2>
+      <p class="section-subtitle">Инструменты, с которыми я работаю каждый день</p>
+    </div>
+    
+    <div class="skills-grid">
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🎨</div>
+        <h3>Frontend</h3>
+        <p>Создаю адаптивные и интерактивные интерфейсы с плавными анимациями</p>
+        <div class="skill-tags">
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Vue</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">Next.js</span>
+          <span class="skill-tag">Tailwind</span>
+        </div>
+      </div>
+      
+      <div class="skill-card fade-in">
+        <div class="skill-icon">⚙️</div>
+        <h3>Backend</h3>
+        <p>Разрабатываю надёжные API и серверную логику для любых задач</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Express</span>
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">PostgreSQL</span>
+        </div>
+      </div>
+      
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🚀</div>
+        <h3>DevOps & Tools</h3>
+        <p>Настраиваю автоматизацию, деплой и CI/CD для стабильной работы</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">Nginx</span>
+          <span class="skill-tag">AWS</span>
+        </div>
+      </div>
+      
+      <div class="skill-card fade-in">
+        <div class="skill-icon">✨</div>
+        <h3>UI/UX Design</h3>
+        <p>Проектирую удобные интерфейсы и создаю дизайн-макеты в Figma</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Prototyping</span>
+          <span class="skill-tag">Design Systems</span>
+          <span class="skill-tag">UX Research</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-tag">// projects</div>
+      <h2 class="section-title">Избранные <span class="gradient-text">работы</span></h2>
+      <p class="section-subtitle">Несколько проектов, которыми я горжусь</p>
+    </div>
+    
+    <div class="projects-grid">
+      <div class="project-card fade-in">
+        <div class="project-image">🛒</div>
+        <div class="project-info">
+          <div class="project-category">E-commerce</div>
+          <h3>NovaShop</h3>
+          <p>Современный интернет-магазин электроники с умным поиском, корзиной и онлайн-оплатой</p>
+          <div class="project-stack">
+            <span class="skill-tag">Next.js</span>
+            <span class="skill-tag">Stripe</span>
+            <span class="skill-tag">PostgreSQL</span>
+          </div>
+          <a href="#" class="project-link">Смотреть кейс →</a>
+        </div>
+      </div>
+      
+      <div class="project-card fade-in">
+        <div class="project-image">📊</div>
+        <div class="project-info">
+          <div class="project-category">SaaS Platform</div>
+          <h3>AnalyticsHub</h3>
+          <p>Платформа аналитики для бизнеса с real-time графиками и отчётами в PDF</p>
+          <div class="project-stack">
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">D3.js</span>
+            <span class="skill-tag">Node.js</span>
+          </div>
+          <a href="#" class="project-link">Смотреть кейс →</a>
+        </div>
+      </div>
+      
+      <div class="project-card fade-in">
+        <div class="project-image">🎓</div>
+        <div class="project-info">
+          <div class="project-category">EdTech</div>
+          <h3>LearnFlow</h3>
+          <p>Образовательная платформа с видеокурсами, тестами и системой достижений</p>
+          <div class="project-stack">
+            <span class="skill-tag">Vue</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Redis</span>
+          </div>
+          <a href="#" class="project-link">Смотреть кейс →</a>
+        </div>
+      </div>
+      
+      <div class="project-card fade-in">
+        <div class="project-image">🏋️</div>
+        <div class="project-info">
+          <div class="project-category">Mobile App</div>
+          <h3>FitTracker</h3>
+          <p>PWA-приложение для трекинга тренировок с персональными программами</p>
+          <div class="project-stack">
+            <span class="skill-tag">React Native</span>
+            <span class="skill-tag">Firebase</span>
+            <span class="skill-tag">TypeScript</span>
+          </div>
+          <a href="#" class="project-link">Смотреть кейс →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-wrapper fade-in">
+      <div class="section-tag">// contact</div>
+      <h2>Давайте <span class="gradient-text">создадим</span> что-то крутое</h2>
+      <p>Есть идея проекта? Напишите мне — обсудим детали и сроки</p>
+      <div class="contact-links">
+        <a href="mailto:alex@morozov.dev" class="contact-link">
+          ✉️ alex@morozov.dev
+        </a>
+        <a href="https://t.github.com" class="contact-link">
+          💬 @alex_morozov
+        </a>
+        <a href="#" class="contact-link">
+          💼 GitHub
+        </a>
+        <a href="#" class="contact-link">
+          📄 Скачать CV
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <span>Алекс Морозов</span>. Сделано с ❤️ и большим количеством кофе</p>
+</footer>
+
+<script>
+  // Анимация появления при скролле
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  
+  // Мобильное меню
+  document.querySelector('.burger').addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'absolute';
+    links.style.top = '70px';
+    links.style.right = '5%';
+    links.style.background = 'var(--card)';
+    links.style.padding = '20px';
+    links.style.borderRadius = '12px';
+    links.style.border = '1px solid var(--border)';
+  });
+  
+  // Плавный скролл с закрытием меню
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        document.querySelector('.nav-links').style.display = 'none';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
